@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hotel Manager</title>
+<style>
+  :root{
+    --bg:#f4f6f8; --card:#ffffff; --text:#1f2933; --muted:#6b7280;
+    --brand:#2563eb; --brand-light:#dbeafe;
+    --avail:#16a34a; --avail-bg:#dcfce7;
+    --occ:#dc2626; --occ-bg:#fee2e2;
+    --clean:#d97706; --clean-bg:#fef3c7;
+    --border:#e5e7eb;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#111827; --card:#1f2937; --text:#f3f4f6; --muted:#9ca3af;
+      --brand:#60a5fa; --brand-light:#1e3a5f;
+      --avail:#4ade80; --avail-bg:#14532d;
+      --occ:#f87171; --occ-bg:#7f1d1d;
+      --clean:#fbbf24; --clean-bg:#78350f;
+      --border:#374151;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#111827; --card:#1f2937; --text:#f3f4f6; --muted:#9ca3af;
+    --brand:#60a5fa; --brand-light:#1e3a5f;
+    --avail:#4ade80; --avail-bg:#14532d;
+    --occ:#f87171; --occ-bg:#7f1d1d;
+    --clean:#fbbf24; --clean-bg:#78350f;
+    --border:#374151;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-padding-top:env(safe-area-inset-top,0px);}
+  body{
+    margin:0; font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    background:var(--bg); color:var(--text);
+  }
+  header{
+    padding:18px 24px; padding-top:calc(18px + env(safe-area-inset-top,0px));
+    background:var(--card); border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  }
+  header h1{margin:0; font-size:1.25rem;}
+  header .tag{color:var(--muted); font-size:0.85rem;}
+  .wrap{max-width:1100px; margin:0 auto; padding:24px 16px 40px;}
+  .stats{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:14px; margin-bottom:28px;
+  }
+  .stat{
+    background:var(--card); border:1px solid var(--border); border-radius:12px;
+    padding:16px;
+  }
+  .stat .num{font-size:1.6rem; font-weight:700;}
+  .stat .label{color:var(--muted); font-size:0.85rem; margin-top:4px;}
+  h2{font-size:1.05rem; margin:0 0 12px;}
+  section{margin-bottom:32px;}
+  .rooms{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+    gap:12px;
+  }
+  .room{
+    background:var(--card); border:1px solid var(--border); border-radius:10px;
+    padding:14px; text-align:center;
+  }
+  .room .num{font-weight:700; font-size:1.1rem;}
+  .room .type{color:var(--muted); font-size:0.8rem; margin:4px 0 8px;}
+  .badge{
+    display:inline-block; font-size:0.75rem; font-weight:600;
+    padding:3px 10px; border-radius:999px;
+  }
+  .badge.available{color:var(--avail); background:var(--avail-bg);}
+  .badge.occupied{color:var(--occ); background:var(--occ-bg);}
+  .badge.cleaning{color:var(--clean); background:var(--clean-bg);}
+
+  .table-wrap{overflow-x:auto; background:var(--card); border:1px solid var(--border); border-radius:12px;}
+  table{width:100%; border-collapse:collapse; min-width:560px;}
+  th,td{text-align:left; padding:12px 14px; font-size:0.9rem; border-bottom:1px solid var(--border);}
+  th{color:var(--muted); font-weight:600; font-size:0.8rem; text-transform:uppercase; letter-spacing:.03em;}
+  tr:last-child td{border-bottom:none;}
+
+  form{
+    background:var(--card); border:1px solid var(--border); border-radius:12px;
+    padding:18px; display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:14px;
+  }
+  label{display:flex; flex-direction:column; font-size:0.85rem; color:var(--muted); gap:6px;}
+  input,select{
+    padding:9px 10px; border-radius:8px; border:1px solid var(--border);
+    background:var(--bg); color:var(--text); font-size:0.9rem;
+  }
+  .form-actions{grid-column:1/-1; display:flex; justify-content:flex-end;}
+  button{
+    background:var(--brand); color:#fff; border:none; padding:10px 20px;
+    border-radius:8px; font-weight:600; cursor:pointer; font-size:0.9rem;
+  }
+  footer{text-align:center; color:var(--muted); font-size:0.8rem; padding:20px;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🏨 Grand Horizon Hotel</h1>
+  <span class="tag">Front Desk Dashboard</span>
+</header>
+
+<div class="wrap">
+
+  <div class="stats">
+    <div class="stat"><div class="num">42</div><div class="label">Total Rooms</div></div>
+    <div class="stat"><div class="num">27</div><div class="label">Occupied</div></div>
+    <div class="stat"><div class="num">12</div><div class="label">Available</div></div>
+    <div class="stat"><div class="num">3</div><div class="label">Cleaning</div></div>
+  </div>
+
+  <section>
+    <h2>Room Status</h2>
+    <div class="rooms">
+      <div class="room"><div class="num">101</div><div class="type">Standard</div><span class="badge available">Available</span></div>
+      <div class="room"><div class="num">102</div><div class="type">Standard</div><span class="badge occupied">Occupied</span></div>
+      <div class="room"><div class="num">103</div><div class="type">Deluxe</div><span class="badge occupied">Occupied</span></div>
+      <div class="room"><div class="num">104</div><div class="type">Deluxe</div><span class="badge cleaning">Cleaning</span></div>
+      <div class="room"><div class="num">201</div><div class="type">Suite</div><span class="badge available">Available</span></div>
+      <div class="room"><div class="num">202</div><div class="type">Standard</div><span class="badge occupied">Occupied</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Current Bookings</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Guest</th><th>Room</th><th>Check-in</th><th>Check-out</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Aditi Sharma</td><td>102</td><td>Sep 20, 2026</td><td>Sep 24, 2026</td><td><span class="badge occupied">Checked-in</span></td></tr>
+          <tr><td>Rahul Mehta</td><td>103</td><td>Sep 21, 2026</td><td>Sep 23, 2026</td><td><span class="badge occupied">Checked-in</span></td></tr>
+          <tr><td>Priya Nair</td><td>201</td><td>Sep 25, 2026</td><td>Sep 28, 2026</td><td><span class="badge cleaning">Upcoming</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>New Booking</h2>
+    <form>
+      <label>Guest Name <input type="text" placeholder="Full name"></label>
+      <label>Room <select>
+        <option>101 - Standard</option>
+        <option>103 - Deluxe</option>
+        <option>201 - Suite</option>
+      </select></label>
+      <label>Check-in <input type="date"></label>
+      <label>Check-out <input type="date"></label>
+      <div class="form-actions"><button type="button">Add Booking</button></div>
+    </form>
+  </section>
+
+</div>
+
+<footer>Grand Horizon Hotel — Management Demo (HTML &amp; CSS only)</footer>
+
+</body>
+</html>
